@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theme Preview — Portfolio &amp; Services</title>
+<!-- Reuses the actual theme stylesheet so this preview matches the real theme -->
+<link rel="stylesheet" href="../portfolio-theme/style.css">
+<style>
+  /* Tiny helpers only for this static preview (not part of the theme) */
+  .preview-banner{background:#fffbe6;border-bottom:1px solid #f5e6a8;color:#7a5d00;
+    text-align:center;font:600 14px/1.5 system-ui,sans-serif;padding:10px 16px;}
+  .ph{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#e9eefb,#dfe7fb);
+    color:#9aa7c7;font-size:2.4rem;width:100%;height:100%;}
+</style>
+</head>
+<body>
+
+<div class="preview-banner">Static design preview — sample content. The real theme pulls projects &amp; services from your WordPress admin.</div>
+
+<!-- Header -->
+<header class="pt-header">
+  <div class="pt-container pt-header__inner">
+    <div class="pt-brand"><a href="#" style="color:inherit;">Your Name</a></div>
+    <button class="pt-nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav class="pt-nav">
+      <ul>
+        <li class="current-menu-item"><a href="#">Home</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="pt-hero">
+    <div class="pt-container">
+      <span class="pt-eyebrow">Your Name</span>
+      <h1>Hi, I build thoughtful digital work.</h1>
+      <p class="pt-hero__lead">A personal portfolio showcasing my projects and the services I offer.</p>
+      <div class="pt-hero__actions">
+        <a class="pt-btn" href="#portfolio">View my work</a>
+        <a class="pt-btn pt-btn--ghost" href="#services">See services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section id="portfolio" class="pt-section pt-section--muted">
+    <div class="pt-container">
+      <div class="pt-section__head">
+        <span class="pt-eyebrow">Selected work</span>
+        <h2>Portfolio</h2>
+        <p>A few projects I am proud of.</p>
+      </div>
+      <div class="pt-grid pt-grid--3">
+        <article class="pt-card">
+          <a class="pt-card__media" href="#"><span class="ph">&#9671;</span></a>
+          <div class="pt-card__body">
+            <span class="pt-card__tag">Web App</span>
+            <h3 class="pt-card__title"><a href="#">Acme Dashboard</a></h3>
+            <p class="pt-card__excerpt">A real-time analytics dashboard with a focus on clarity and speed.</p>
+            <a class="pt-card__link" href="#">View project &rarr;</a>
+          </div>
+        </article>
+        <article class="pt-card">
+          <a class="pt-card__media" href="#"><span class="ph">&#9671;</span></a>
+          <div class="pt-card__body">
+            <span class="pt-card__tag">Branding</span>
+            <h3 class="pt-card__title"><a href="#">Lumen Identity</a></h3>
+            <p class="pt-card__excerpt">Full brand identity and design system for a sustainable energy startup.</p>
+            <a class="pt-card__link" href="#">View project &rarr;</a>
+          </div>
+        </article>
+        <article class="pt-card">
+          <a class="pt-card__media" href="#"><span class="ph">&#9671;</span></a>
+          <div class="pt-card__body">
+            <span class="pt-card__tag">Mobile</span>
+            <h3 class="pt-card__title"><a href="#">Trailmark App</a></h3>
+            <p class="pt-card__excerpt">An iOS hiking companion with offline maps and trip planning.</p>
+            <a class="pt-card__link" href="#">View project &rarr;</a>
+          </div>
+        </article>
+      </div>
+      <div style="text-align:center;margin-top:40px;">
+        <a class="pt-btn pt-btn--ghost" href="#">View all projects</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="pt-section">
+    <div class="pt-container">
+      <div class="pt-section__head">
+        <span class="pt-eyebrow">What I offer</span>
+        <h2>Services</h2>
+        <p>How I can help you and your project.</p>
+      </div>
+      <div class="pt-grid pt-grid--3">
+        <article class="pt-service">
+          <div class="pt-service__icon">&#9889;</div>
+          <h3 class="pt-service__title">Web Design</h3>
+          <p class="pt-service__desc">Clean, responsive websites that load fast and convert visitors.</p>
+          <div class="pt-service__price">From $1,200</div>
+        </article>
+        <article class="pt-service">
+          <div class="pt-service__icon">&#128241;</div>
+          <h3 class="pt-service__title">App Development</h3>
+          <p class="pt-service__desc">Cross-platform mobile and web apps built to scale with your business.</p>
+          <div class="pt-service__price">From $3,500</div>
+        </article>
+        <article class="pt-service">
+          <div class="pt-service__icon">&#127912;</div>
+          <h3 class="pt-service__title">Brand Identity</h3>
+          <p class="pt-service__desc">Logos, color systems, and guidelines that make your brand memorable.</p>
+          <div class="pt-service__price">From $900</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="pt-section pt-section--muted">
+    <div class="pt-container">
+      <div class="pt-cta">
+        <h2>Have a project in mind?</h2>
+        <p>Let&rsquo;s talk about how I can help bring your idea to life.</p>
+        <a class="pt-btn" href="#">Get in touch</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="pt-footer">
+  <div class="pt-container pt-footer__inner">
+    <small>&copy; 2026 Your Name. All rights reserved.</small>
+    <div class="pt-footer__social">
+      <a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">X</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
