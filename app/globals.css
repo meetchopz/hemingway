@@ -2,7 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "SC Prosper Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/SCProsperSans-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "SC Prosper Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/SCProsperSans-Bold.otf") format("opentype");
+}
+
 html,
 body {
   height: 100%;
+}
+
+body {
+  overflow: hidden;
 }

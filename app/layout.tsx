@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hemingway — AI Writing Assistant",
-  description: "Improve your writing with Claude.",
+  title: "Space Type — Concrete Poetry Generator",
+  description: "Shape text into concrete poetry with SC Prosper Sans.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-stone-50 text-stone-900 antialiased">{children}</body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
