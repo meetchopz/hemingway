@@ -60,6 +60,7 @@ export default function Studio() {
   const [seed, setSeed] = useState(1234);
   const [showBg, setShowBg] = useState(true);
   const [halo, setHalo] = useState(0.4);
+  const [boxesOn, setBoxesOn] = useState(true);
 
   // Freehand state
   const [strokes, setStrokes] = useState<Pt[][]>([[]]);
@@ -93,6 +94,9 @@ export default function Studio() {
       variant,
     });
   }, [kind, variant, density, scale, randomness, lineGap, seed, strokes, closePath]);
+
+  // A straight single-segment path can carry a real oriented text box.
+  const segs = useMemo(() => paths.map(parseSegment), [paths]);
 
   const unitSample = text.trim() + "   ";
 
@@ -395,7 +399,7 @@ export default function Studio() {
           onChange={setLetterSpacing}
         />
         <Slider
-          label="Legibility (halo)"
+          label="Halo (curved shapes)"
           min={0}
           max={1}
           step={0.05}
@@ -412,6 +416,15 @@ export default function Studio() {
             </button>
           </div>
         </Field>
+
+        <label className="flex items-center gap-2 text-xs text-slate-300">
+          <input
+            type="checkbox"
+            checked={boxesOn}
+            onChange={(e) => setBoxesOn(e.target.checked)}
+          />
+          Solid text boxes (#081245) — no overlap
+        </label>
 
         <label className="flex items-center gap-2 text-xs text-slate-300">
           <input
@@ -475,34 +488,47 @@ export default function Studio() {
           {paths.map((_, i) => {
             const target = lengths[i] ?? 1500;
             const filled = fillFor(text, unitW, target);
-            const segs = buildSegments(filled, keywords);
-            const haloOn = showBg && halo > 0;
+            const parts = buildSegments(filled, keywords);
+            const seg = segs[i];
+            // Straight runs get a real opaque box; curved runs get an opaque
+            // glyph knockout (halo). Boxes need the navy background on.
+            const boxed = boxesOn && showBg && seg;
+            const drawn = Math.min(target, lengths[i] ?? target);
+            const haloW = boxed
+              ? 0
+              : showBg
+              ? fontSize * (boxesOn ? Math.max(halo, 0.45) : halo)
+              : 0;
             return (
-              <text
-                key={i}
-                fontFamily={FONT}
-                fontSize={fontSize}
-                fontWeight={bold ? 700 : 400}
-                letterSpacing={letterSpacing}
-                fill={INK}
-                stroke={haloOn ? HALO : undefined}
-                strokeWidth={haloOn ? fontSize * halo : undefined}
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                style={{ paintOrder: "stroke" }}
-              >
-                <textPath href={`#tp${i}`} startOffset={0}>
-                  {segs.map((s, j) =>
-                    s.hl ? (
-                      <tspan key={j} fill={HL}>
-                        {s.t}
-                      </tspan>
-                    ) : (
-                      <tspan key={j}>{s.t}</tspan>
-                    )
-                  )}
-                </textPath>
-              </text>
+              <g key={i}>
+                {boxed && (
+                  <TextBox seg={seg} length={drawn} fontSize={fontSize} />
+                )}
+                <text
+                  fontFamily={FONT}
+                  fontSize={fontSize}
+                  fontWeight={bold ? 700 : 400}
+                  letterSpacing={letterSpacing}
+                  fill={INK}
+                  stroke={haloW > 0 ? HALO : undefined}
+                  strokeWidth={haloW > 0 ? haloW : undefined}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  style={{ paintOrder: "stroke" }}
+                >
+                  <textPath href={`#tp${i}`} startOffset={0}>
+                    {parts.map((s, j) =>
+                      s.hl ? (
+                        <tspan key={j} fill={HL}>
+                          {s.t}
+                        </tspan>
+                      ) : (
+                        <tspan key={j}>{s.t}</tspan>
+                      )
+                    )}
+                  </textPath>
+                </text>
+              </g>
             );
           })}
 
@@ -526,6 +552,45 @@ export default function Studio() {
         </svg>
       </main>
     </div>
+  );
+}
+
+type Seg = { x1: number; y1: number; x2: number; y2: number };
+
+// Detect a straight single-segment path ("M x y L x y") so we can back it
+// with a real, orientation-aware text box.
+function parseSegment(d: string): Seg | null {
+  const m = d.match(
+    /^M (-?[\d.]+) (-?[\d.]+) L (-?[\d.]+) (-?[\d.]+)$/
+  );
+  if (!m) return null;
+  return { x1: +m[1], y1: +m[2], x2: +m[3], y2: +m[4] };
+}
+
+// An opaque #081245 rounded rectangle sized to the text and rotated to the run.
+function TextBox({
+  seg,
+  length,
+  fontSize,
+}: {
+  seg: Seg;
+  length: number;
+  fontSize: number;
+}) {
+  const ang = (Math.atan2(seg.y2 - seg.y1, seg.x2 - seg.x1) * 180) / Math.PI;
+  const padX = fontSize * 0.28;
+  const top = fontSize * 0.86; // baseline sits on the path; box covers ascenders
+  const h = fontSize * 1.22;
+  return (
+    <rect
+      x={seg.x1 - padX}
+      y={seg.y1 - top}
+      width={length + padX * 2}
+      height={h}
+      rx={fontSize * 0.16}
+      fill="#081245"
+      transform={`rotate(${ang} ${seg.x1} ${seg.y1})`}
+    />
   );
 }
 
