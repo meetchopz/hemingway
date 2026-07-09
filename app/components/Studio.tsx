@@ -19,6 +19,7 @@ import { getFontCss } from "../lib/fontEmbed";
 const W = 1200;
 const H = 900;
 const BG = "#0a1246";
+const HALO = "#081245";
 const INK = "#ffffff";
 const HL = "#38d200";
 const FONT = "SC Prosper Sans";
@@ -58,6 +59,7 @@ export default function Studio() {
   const [bold, setBold] = useState(false);
   const [seed, setSeed] = useState(1234);
   const [showBg, setShowBg] = useState(true);
+  const [halo, setHalo] = useState(0.4);
 
   // Freehand state
   const [strokes, setStrokes] = useState<Pt[][]>([[]]);
@@ -392,6 +394,14 @@ export default function Studio() {
           value={letterSpacing}
           onChange={setLetterSpacing}
         />
+        <Slider
+          label="Legibility (halo)"
+          min={0}
+          max={1}
+          step={0.05}
+          value={halo}
+          onChange={setHalo}
+        />
         <Field label="Weight">
           <div className="grid grid-cols-2 gap-1.5">
             <button onClick={() => setBold(false)} className={btn(!bold)}>
@@ -466,6 +476,7 @@ export default function Studio() {
             const target = lengths[i] ?? 1500;
             const filled = fillFor(text, unitW, target);
             const segs = buildSegments(filled, keywords);
+            const haloOn = showBg && halo > 0;
             return (
               <text
                 key={i}
@@ -474,6 +485,11 @@ export default function Studio() {
                 fontWeight={bold ? 700 : 400}
                 letterSpacing={letterSpacing}
                 fill={INK}
+                stroke={haloOn ? HALO : undefined}
+                strokeWidth={haloOn ? fontSize * halo : undefined}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                style={{ paintOrder: "stroke" }}
               >
                 <textPath href={`#tp${i}`} startOffset={0}>
                   {segs.map((s, j) =>
